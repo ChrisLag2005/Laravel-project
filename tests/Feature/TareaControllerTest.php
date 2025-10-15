@@ -1,53 +1,65 @@
 <?php
 
+namespace Tests\Feature;
+
 use App\Models\Tarea;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+class TareaControllerTest extends TestCase
+{
+    use RefreshDatabase;
 
-test('muestra listado de tareas', function () {
-    $tarea = Tarea::factory()->create();
+    /** @test */
+    public function muestra_listado_de_tareas()
+    {
+        $tarea = Tarea::factory()->create();
 
-    $this->get(route('tarea.index'))
-        ->assertSeeInOrder(['Título', 'Acciones'])
-        ->assertSee($tarea->titulo)
-        ->assertStatus(200);
-});
+        $this->get(route('tarea.index'))
+            ->assertSeeInOrder(['Título', 'Acciones'])
+            ->assertSee($tarea->titulo)
+            ->assertStatus(200);
+    }
 
-test('muestra formulario de creación de tarea', function () {
-    $this->get(route('tarea.create'))
-        ->assertSeeInOrder(['Título', 'Descripción', 'Guardar'])
-        ->assertStatus(200);
-});
+    /** @test */
+    public function muestra_formulario_de_creacion_de_tarea()
+    {
+        $this->get(route('tarea.create'))
+            ->assertSeeInOrder(['Título', 'Descripción', 'Guardar'])
+            ->assertStatus(200);
+    }
 
-test('crea una tarea', function () {
-    $tarea = Tarea::factory()->make();
+    /** @test */
+    public function crea_una_tarea()
+    {
+        $tarea = Tarea::factory()->make();
 
-    $this->post(route('tarea.store'), $tarea->toArray())
-        ->assertRedirect(route('tarea.index'));
+        $this->post(route('tarea.store'), $tarea->toArray())
+            ->assertRedirect(route('tarea.index'));
 
-    $this->assertDatabaseHas('tareas', [
-        'titulo' => $tarea->titulo,
-        'descripcion' => $tarea->descripcion
-    ]);
+        $this->assertDatabaseHas('tareas', [
+            'titulo' => $tarea->titulo,
+            'descripcion' => $tarea->descripcion,
+        ]);
 
-    $this->get(route('tarea.index'))
-        ->assertSee($tarea->titulo);
-});
+        $this->get(route('tarea.index'))
+            ->assertSee($tarea->titulo);
+    }
 
-test('verifica errores al crear tarea', function () {
-    $tarea = Tarea::factory()->make([
-        'titulo' => '',
-        'descripcion' => 'Corta'
-    ]);
+    /** @test */
+    public function verifica_errores_al_crear_tarea()
+    {
+        $tarea = Tarea::factory()->make([
+            'titulo' => '',
+            'descripcion' => 'Corta',
+        ]);
 
-    $this->post(route('tarea.store'), $tarea->toArray())
-        ->assertInvalid(['titulo', 'descripcion']);
+        $this->post(route('tarea.store'), $tarea->toArray())
+            ->assertSessionHasErrors(['titulo', 'descripcion']);
 
-    $this->assertDatabaseMissing('tareas', [
-        'titulo' => $tarea->titulo,
-        'descripcion' => $tarea->descripcion
-    ]);
-
-    // $this->get(route('tarea.index'))
-    //     ->assertSee($tarea->titulo);
-});
+        $this->assertDatabaseMissing('tareas', [
+            'titulo' => $tarea->titulo,
+            'descripcion' => $tarea->descripcion,
+        ]);
+    }
+}
