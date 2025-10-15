@@ -7,6 +7,7 @@ use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\TareaController;
+use App\Http\Controllers\AlumnoController;
 use Livewire\Volt\Volt;
 
 Route::get('/', function () {
@@ -14,6 +15,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::resource('tarea', TareaController::class);
+Route::resource('alumno', AlumnoController::class);
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
