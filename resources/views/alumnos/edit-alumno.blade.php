@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Alumno: Editar</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-</head>
-<body class="container py-4">
+<x-mi-layout>
     <x-encabezado>
         Editar Alumno: {{ $alumno->nombre }}
     </x-encabezado>
@@ -27,6 +18,9 @@
                 class="form-control" 
                 value="{{ old('codigo') ?? $alumno->codigo }}" 
                 required>
+            @error('codigo')
+                <div class="alert alert-danger mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -38,6 +32,9 @@
                 class="form-control" 
                 value="{{ old('nombre') ?? $alumno->nombre }}" 
                 required>
+            @error('nombre')
+                <div class="alert alert-danger mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -49,6 +46,9 @@
                 class="form-control" 
                 value="{{ old('correo') ?? $alumno->correo }}" 
                 required>
+            @error('correo')
+                <div class="alert alert-danger mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -60,6 +60,9 @@
                 class="form-control" 
                 value="{{ old('fecha_nacimiento') ?? $alumno->fecha_nacimiento }}" 
                 required>
+            @error('fecha_nacimiento')
+                <div class="alert alert-danger mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -69,6 +72,9 @@
                 <option value="M" {{ (old('sexo') ?? $alumno->sexo) == 'M' ? 'selected' : '' }}>Masculino</option>
                 <option value="F" {{ (old('sexo') ?? $alumno->sexo) == 'F' ? 'selected' : '' }}>Femenino</option>
             </select>
+            @error('sexo')
+                <div class="alert alert-danger mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-3">
@@ -80,12 +86,12 @@
                 class="form-control" 
                 value="{{ old('carrera') ?? $alumno->carrera }}" 
                 required>
+            @error('carrera')
+                <div class="alert alert-danger mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <button type="submit" class="btn btn-success">Guardar cambios</button>
         <a href="{{ route('alumno.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-</body>
-</html>
+</x-mi-layout>
